@@ -7,3 +7,7 @@
 
 [build.environment]
   NODE_VERSION = "22"
+  # Zonder dit kiest Nitro op Netlify vanzelf het preset `netlify-static`, dat
+  # naar dist/ schrijft in plaats van naar .output/public — en dan faalt de
+  # deploy op een map die niet bestaat. Vastzetten houdt lokaal en CI gelijk.
+  NITRO_PRESET = "static"
