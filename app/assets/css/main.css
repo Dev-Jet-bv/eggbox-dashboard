@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  /* Huisstijl uit tailwind.config.js / Models/Color.cs van de app */
+  --color-primary: #ee3967;
+  --color-accent: #e1ce55;
+  --color-ink: #1b1717;
+
+  /* Donker is hier de norm: het bord hangt in een repetitieruimte */
+  --color-bg: #12100f;
+  --color-surface: #1b1717;
+  --color-surface-2: #262020;
+  --color-line: #362d2d;
+  --color-text: #f4efee;
+  --color-muted: #a2938f;
+
+  --color-ok: #2dc75c;
+  --color-warn: #ffdc4a;
+  --color-bad: #ff6464;
+
+  /* De zes mixerkleuren, letterlijk uit Models/Color.cs */
+  --color-mix-1: #ff6464;
+  --color-mix-2: #2dc75c;
+  --color-mix-3: #ffdc4a;
+  --color-mix-4: #659df2;
+  --color-mix-5: #8f7fee;
+  --color-mix-6: #ffffff;
+}
+
+html { background: var(--color-bg); color-scheme: dark; }
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Geen hover-only interacties: alles moet met een vinger werken. */
+@media (hover: none) {
+  .hover\:bg-surface-2:hover { background-color: inherit; }
+}
+
+.safe-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }

@@ -1,0 +1,9 @@
+# Statische SPA: ssr staat uit, dus `nuxt generate` levert een map met bestanden.
+# SUPABASE_URL en SUPABASE_KEY zet je in Netlify onder Site settings ->
+# Environment variables, niet in de repo.
+[build]
+  command = "npm run generate"
+  publish = ".output/public"
+
+[build.environment]
+  NODE_VERSION = "22"

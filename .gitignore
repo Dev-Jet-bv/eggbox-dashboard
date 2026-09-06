@@ -1,0 +1,11 @@
+node_modules
+.nuxt
+.output
+dist
+.env
+.DS_Store
+*.log
+
+# De hand-off hoort bij de MAUI-repo en blijft daar; hij bevat namen,
+# adressen en interne issue-nummers die niet in een publieke repo horen.
+docs/dashboard-handoff.md
