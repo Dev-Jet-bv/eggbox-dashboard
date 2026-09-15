@@ -13,10 +13,10 @@ const standVoor = (r: any) =>
   r.scope === 'channel' ? standen.value.get(r.saved_at + '|' + r.idx) ?? null : null
 
 const versies = computed(() => {
-  const per = new Map<string, { saved_at: string; regels: any[] }>()
+  const per = new Map<string, { saved_at: string; door: string | null; regels: any[] }>()
   for (const w of props.wijzigingen) {
     let v = per.get(w.saved_at)
-    if (!v) per.set(w.saved_at, v = { saved_at: w.saved_at, regels: [] })
+    if (!v) per.set(w.saved_at, v = { saved_at: w.saved_at, door: w.saved_by_label ?? null, regels: [] })
     v.regels.push(w)
   }
   return [...per.values()]
@@ -43,7 +43,9 @@ const gainSprongen = computed(() =>
     </div>
 
     <section v-for="v in versies" :key="v.saved_at" class="rounded-2xl border border-line bg-surface">
-      <h2 class="px-3 pt-2.5 pb-1 text-xs text-muted">{{ dayAndClock(v.saved_at) }}</h2>
+      <h2 class="px-3 pt-2.5 pb-1 text-xs text-muted">
+        {{ dayAndClock(v.saved_at) }}<template v-if="v.door"> · <span class="text-text">{{ v.door }}</span></template>
+      </h2>
       <ul class="divide-y divide-line/60">
         <WijzigingRegel v-for="(r, i) in v.regels" :key="i" :regel="r" :stand="standVoor(r)" />
       </ul>
