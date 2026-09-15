@@ -17,6 +17,7 @@ const opnames = ref<any[]>([])
 const kanalen = ref<any[]>([])
 const bussen = ref<any[]>([])
 const wijzigingen = ref<any[]>([])
+const kanaalStanden = ref<any[]>([])
 const bezig = ref(true)
 const fout = ref<string | null>(null)
 
@@ -46,6 +47,21 @@ onMounted(async () => {
     kanalen.value = k.data || []
     bussen.value = b.data || []
     wijzigingen.value = w.data || []
+
+    // Naam en kleur van elk kanaal op het moment van een wijziging. Alleen de
+    // opslagmomenten die in de historie voorkomen, en in stukjes: Supabase geeft
+    // maximaal 1000 rijen terug, en 16 kanalen x honderd versies is dat snel.
+    const momenten = [...new Set(wijzigingen.value.map((x: any) => x.saved_at))]
+    const standen: any[] = []
+    for (let i = 0; i < momenten.length; i += 50) {
+      const { data, error } = await sb.from('settings_channel_state_v')
+        .select('saved_at,channel,channel_name,color_value')
+        .eq('band_id', id)
+        .in('saved_at', momenten.slice(i, i + 50))
+      if (error) throw error
+      standen.push(...(data || []))
+    }
+    kanaalStanden.value = standen
   } catch (e: any) {
     fout.value = e?.message || 'Kon de band niet ophalen'
   } finally {
@@ -91,7 +107,7 @@ onMounted(async () => {
       </VeiligBlok>
 
       <VeiligBlok v-else wat="De historie">
-        <BandHistorie :wijzigingen="wijzigingen" />
+        <BandHistorie :wijzigingen="wijzigingen" :kanaal-standen="kanaalStanden" />
       </VeiligBlok>
     </template>
 

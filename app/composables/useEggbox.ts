@@ -106,3 +106,15 @@ export const louder = (delta?: number | null) =>
 /** Een bus die nog zijn fabrieksnaam draagt ("BUS03") heeft niemand geclaimd. */
 export const isVrijeBus = (naam?: string | null) =>
   !naam || /^bus\s*0*\d+$/i.test(naam.trim())
+
+/** Voor smalle kolommen: −∞ in plaats van "helemaal dicht". */
+export const formatDbKort = (v?: number | string | null) => {
+  if (v == null || v === '') return '—'
+  const n = typeof v === 'string' ? Number(v) : v
+  if (!isFinite(n) || n <= -90) return '−∞'
+  return `${n > 0 ? '+' : ''}${Math.round(n * 10) / 10} dB`
+}
+
+/** "CH03" zoals op de mixer. */
+export const kanaalCode = (idx?: number | null) =>
+  idx == null ? 'CH??' : 'CH' + String(idx).padStart(2, '0')
